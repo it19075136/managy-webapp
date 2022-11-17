@@ -5,13 +5,31 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { DropdownButton } from 'react-bootstrap';
 
 const WebNavbar = () => {
 
   const [show, setShow] = useState(false);
+  const [user, setUser] = useState({
+    type: "",
+    email: ""
+  });
+
+  const handleType = (e) => {
+    setUser({ ...user, type: e });
+  }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleSubmit = (e) => {
+
+    e.preventDefault();
+    console.log(user);
+
+  }
+
 
   return (
     <div>
@@ -42,23 +60,29 @@ const WebNavbar = () => {
           <Modal.Title>Invite to Managy</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={(e) => { handleSubmit(e) }}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
+                name="email"
                 placeholder="name@example.com"
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
                 autoFocus
               />
             </Form.Group>
+            <DropdownButton onSelect={handleType} title="User Type">
+              <Dropdown.Item name="WORKER" eventKey="WORKER" value="WORKER">Worker</Dropdown.Item>
+              <Dropdown.Item name="MANAGER" eventKey="MANAGER" value="MANGER">Manager</Dropdown.Item>
+            </DropdownButton>
+            <br/><br/>
+            <input variant="secondary" type="submit" name="submit" value="submit" />
           </Form>
+
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary">
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Invite
           </Button>
         </Modal.Footer>
       </Modal>
