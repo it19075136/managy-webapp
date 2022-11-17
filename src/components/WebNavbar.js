@@ -7,6 +7,8 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DropdownButton } from 'react-bootstrap';
+import axios from 'axios';
+
 
 const WebNavbar = () => {
 
@@ -24,10 +26,10 @@ const WebNavbar = () => {
   const handleShow = () => setShow(true);
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
     console.log(user);
-
+    axios.post('http://localhost:5000/invitation',user).then((res) => alert("Email sent successfully!!"))
+        .catch(err => alert("Email sent failed with error ", err)); 
   }
 
 
@@ -68,10 +70,12 @@ const WebNavbar = () => {
                 name="email"
                 placeholder="name@example.com"
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
                 autoFocus
               />
             </Form.Group>
-            <DropdownButton onSelect={handleType} title="User Type">
+            
+            <DropdownButton title = {user.type} onSelect={handleType}>
               <Dropdown.Item name="WORKER" eventKey="WORKER" value="WORKER">Worker</Dropdown.Item>
               <Dropdown.Item name="MANAGER" eventKey="MANAGER" value="MANGER">Manager</Dropdown.Item>
             </DropdownButton>
